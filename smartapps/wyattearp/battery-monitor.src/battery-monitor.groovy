@@ -150,11 +150,11 @@ def pageStatus() {
         return pageAbout()
     }
     
-    def listLevel0 = ""
-    def listLevel1 = ""
-    def listLevel2 = ""
-    def listLevel3 = ""
-    def listLevel4 = ""
+    def listLevel0_NoCharge = ""
+    def listLevel1_LowCharge = ""
+    def listLevel2_MediumCharge = ""
+    def listLevel3_HighCharge = ""
+    def listLevel4_FullCharge = ""
 
     if (settings.level1 == null) { settings.level1 = 33 }
     if (settings.level3 == null) { settings.level3 = 67 }
@@ -164,52 +164,52 @@ def pageStatus() {
         settings.devices.each() {
             try {
                 if (it.currentBattery == null) {
-                    listLevel0 += "$it.displayName\n"
+                    listLevel0_NoCharge += "$it.displayName\n"
                 } else if (it.currentBattery >= 0 && it.currentBattery <  settings.level1.toInteger()) {
-                    listLevel1 += "$it.currentBattery  $it.displayName\n"
+                    listLevel1_LowCharge += "$it.currentBattery  $it.displayName\n"
                 } else if (it.currentBattery >= settings.level1.toInteger() && it.currentBattery <= settings.level3.toInteger()) {
-                    listLevel2 += "$it.currentBattery  $it.displayName\n"
+                    listLevel2_MediumCharge += "$it.currentBattery  $it.displayName\n"
                 } else if (it.currentBattery >  settings.level3.toInteger() && it.currentBattery < 100) {
-                    listLevel3 += "$it.currentBattery  $it.displayName\n"
+                    listLevel3_HighCharge += "$it.currentBattery  $it.displayName\n"
                 } else if (it.currentBattery == 100) {
-                    listLevel4 += "$it.displayName\n"
+                    listLevel4_FullCharge += "$it.displayName\n"
                 } else {
-                    listLevel0 += "$it.currentBattery  $it.displayName\n"
+                    listLevel0_NoCharge += "$it.currentBattery  $it.displayName\n"
                 }
             } catch (e) {
                 log.trace "Caught error checking battery status."
                 log.trace e
-                listLevel0 += "$it.displayName\n"
+                listLevel0_NoCharge += "$it.displayName\n"
             }
         }
 
-        if (listLevel0) {
+        if (listLevel0_NoCharge) {
             section("Batteries with errors or no status") {
-                paragraph listLevel0.trim()
+                paragraph listLevel0_NoCharge.trim()
             }
         }
         
-        if (listLevel1) {
+        if (listLevel1_LowCharge) {
             section("Batteries with low charge (less than $settings.level1)") {
-                paragraph listLevel1.trim()
+                paragraph listLevel1_LowCharge_LowCharge.trim()
             }
         }
 
-        if (listLevel2) {
+        if (listLevel2_MediumCharge) {
             section("Batteries with medium charge (between $settings.level1 and $settings.level3)") {
-                paragraph listLevel2.trim()
+                paragraph listLevel2_MediumCharge.trim()
             }
         }
 
-        if (listLevel3) {
+        if (listLevel3_HighCharge) {
             section("Batteries with high charge (more than $settings.level3)") {
-                paragraph listLevel3.trim()
+                paragraph listLevel3_HighCharge.trim()
             }
         }
 
-        if (listLevel4) {
+        if (listLevel4_FullCharge) {
             section("Batteries with full charge") {
-                paragraph listLevel4.trim()
+                paragraph listLevel4_FullCharge.trim()
             }
         }
 
