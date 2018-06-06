@@ -250,13 +250,6 @@ def pageConfigure() {
         required:       true
     ]
 
-    def inputTime      = [
-        name:           "time",
-        type:           "time",
-        title:          "Notify at what time daily?",
-        required:       true
-    ]
-
     def inputPush      = [
         name:           "pushMessage",
         type:           "bool",
@@ -293,7 +286,6 @@ def pageConfigure() {
         }
         
         section("Notification") {
-            input inputTime
             input inputPush
             input inputSMS
         }
@@ -317,7 +309,9 @@ def updated() {
 }
 
 def initialize() {
-    schedule(settings.time, updateStatus)
+    // run the first of every month, at 09:00:00
+    def cronTime = "0 0 9 1 * ? ?"
+    schedule(crontab, updateStatus)
 }
 
 def send(msg) {
