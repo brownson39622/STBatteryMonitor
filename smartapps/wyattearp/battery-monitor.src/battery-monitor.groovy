@@ -310,8 +310,8 @@ def updated() {
 
 def initialize() {
     // run the first of every month, at 09:00:00
-    def cronTime = "0 0 9 1 * ? ?"
-    schedule(crontab, updateStatus)
+    def cronTime = "0 0 9 1 * ?"
+    schedule(cronTime, updateStatus)
 }
 
 def send(msg) {
